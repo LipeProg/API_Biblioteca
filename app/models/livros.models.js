@@ -1,5 +1,11 @@
 module.exports = (sequelize, Sequelize) => {
     const livros = sequelize.define("livros", {
+
+      id: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+      },
       titulo: {
         type: Sequelize.STRING
       },
@@ -17,5 +23,10 @@ module.exports = (sequelize, Sequelize) => {
       }
     });
   
+    livros.belongsTo(sequelize.models.estante, {
+      foreignKey: 'estanteId',
+      as: 'estante'
+    });
+
     return livros;
   };

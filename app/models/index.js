@@ -19,8 +19,19 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.estante = require("./estante.js")(sequelize, Sequelize);
-db.livro = require("./livros.models.js")(sequelize, Sequelize);
-db.pdf = require("./pdf.models.js")(sequelize, Sequelize);
+const estante = require("./estante.js")(sequelize, Sequelize);
+const livro = require("./livros.models.js")(sequelize, Sequelize);
+const pdf = require("./pdf.models.js")(sequelize, Sequelize);
 
-module.exports = db;
+estante.hasMany(livro, { as: "livros" });
+estante.hasMany(pdf, { as: "pdf" });
+
+sequelize.sync()
+  .then(() => {
+    console.log('Tabelas sincronizadas com o banco de dados.');
+  })
+  .catch((error) => {
+    console.error('Erro ao sincronizar tabelas com o banco de dados:', error);
+  });
+
+  module.exports = db;
